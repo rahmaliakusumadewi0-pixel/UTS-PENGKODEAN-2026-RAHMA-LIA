@@ -18,6 +18,7 @@ Repositori mencakup purwarupa antarmuka, dokumentasi penggunaan AI, rancangan da
 ### 1. Purwarupa HTML
 
 **File:** https://github.com/rahmaliakusumadewi0-pixel/UTS-PENGKODEAN-2026-RAHMA-LIA/blob/main/gemini%20canvas.html
+
 **Hasil Gemini:** [voucher_entri_kas_keluar.html`](https://share.gemini.google/t30UU31DLKp4)
 
 Berisi purwarupa antarmuka voucher entri kas keluar yang menggambarkan rancangan tampilan dan alur input transaksi, termasuk pencatatan akun, nominal debit dan kredit, serta indikator keseimbangan jurnal sesuai kebutuhan tugas.
@@ -59,8 +60,11 @@ Repositori ini merupakan dokumentasi tugas akademik. Purwarupa HTML menggambarka
 ---
 
 **Disusun oleh:** Rahma Lia Kusuma Dewi  
+
 **NIM:** 12030124130188
+
 **Kelas:** E
+
 **Mata Kuliah:** Pengkodean dan Pemrograman
 
 **Repositori GitHub:**  
