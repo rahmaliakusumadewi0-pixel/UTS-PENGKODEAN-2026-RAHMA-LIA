@@ -1,0 +1,300 @@
+PROMPT GEMINI CANVAS
+Saya mahasiswa Akuntansi yang sedang mengerjakan tugas Pengkodean Akuntansi. Saya diminta membuat purwarupa modul Voucher Entri Transaksi Kas Keluar berbasis web berdasarkan kebutuhan auditor internal. Aplikasi harus memiliki validasi akuntansi yang benar, kalkulasi jurnal otomatis, indikator keseimbangan debit-kredit, dan rancangan pencatatan riwayat audit (audit log).
+Tugas Anda adalah membangun aplikasi web interaktif yang berfungsi, bukan hanya memberikan desain, mockup, atau contoh kode yang tidak dapat dijalankan. Gunakan Gemini Canvas untuk membuat, menampilkan, dan menyempurnakan purwarupa aplikasi tersebut.
+1. Teknologi dan lingkungan pengembangan
+Gunakan teknologi berikut:
+HTML5 untuk struktur aplikasi.
+Tailwind CSS melalui CDN untuk desain antarmuka.
+JavaScript murni untuk interaksi dan validasi frontend.
+Supabase JavaScript Client melalui CDN untuk integrasi database.
+Supabase PostgreSQL untuk penyimpanan data.
+PostgreSQL PL/pgSQL untuk validasi transaksi dan fungsi database.
+Supabase Auth jika autentikasi pengguna diterapkan.
+Utamakan teknologi yang mudah dijalankan melalui Visual Studio Code dan browser. Jika Gemini Canvas menggunakan lingkungan React atau teknologi lain, jelaskan struktur dan cara menjalankannya, tetapi pertahankan kebutuhan fungsional yang sama. Jangan hanya menampilkan potongan kode. Buat seluruh komponen yang dibutuhkan dan pastikan kode konsisten satu sama lain.
+2. Tujuan dan ruang lingkup aplikasi
+Aplikasi digunakan untuk mencatat transaksi kas keluar melalui voucher jurnal. Pengguna dapat memasukkan informasi transaksi, memilih akun, mengisi nilai debit dan kredit, memeriksa keseimbangan jurnal, menyimpan draft, dan melakukan posting apabila seluruh persyaratan terpenuhi. Aplikasi harus menerapkan prinsip zero-discrepancy, yaitu total debit harus sama dengan total kredit sebelum jurnal dapat diposting. Sistem juga harus dirancang untuk menjaga integritas data dan menyediakan riwayat aktivitas yang dapat diperiksa auditor.
+3. Desain antarmuka pengguna
+Buat antarmuka yang modern, profesional, rapi, responsif, dan cocok untuk aplikasi akuntansi perusahaan.
+Gunakan:
+Sidebar navigasi.
+Header aplikasi.
+Area konten utama.
+Kartu ringkasan total debit, total kredit, dan selisih.
+Tabel jurnal yang rapi.
+Indikator status jurnal.
+Tombol aksi yang jelas.
+Notifikasi keberhasilan dan pesan kesalahan.
+Tampilan yang nyaman digunakan pada laptop maupun perangkat seluler.
+Gunakan warna secara konsisten:
+Hijau untuk jurnal seimbang dan operasi berhasil.
+Merah untuk kesalahan validasi dan jurnal tidak seimbang.
+Abu-abu untuk informasi netral.
+Warna utama profesional untuk navigasi dan tombol.
+Menu minimal:
+Dashboard.
+Voucher Kas Keluar.
+Daftar Jurnal.
+Chart of Accounts.
+Audit Log.
+Menu yang belum memiliki fungsi nyata harus diberi keterangan sebagai fitur yang belum tersedia. Jangan membuat tombol yang seolah-olah bekerja tetapi tidak melakukan tindakan apa pun.
+4. Formulir header transaksi
+Buat formulir dengan field berikut:
+Tanggal transaksi.
+Nomor voucher.
+Deskripsi transaksi.
+Status transaksi.
+Identitas pengguna pembuat transaksi apabila autentikasi telah dikonfigurasi.
+Validasi bahwa tanggal transaksi valid, nomor voucher tidak kosong, dan deskripsi tidak kosong.
+Nomor voucher harus unik. Jika nomor voucher dibuat otomatis, gunakan mekanisme database yang aman terhadap duplikasi akibat transaksi bersamaan.
+Sediakan fungsi untuk:
+Membuat voucher baru.
+Menyimpan voucher sebagai draft.
+Mengedit draft yang belum diposting sesuai hak akses.
+Melakukan posting jika seluruh validasi terpenuhi.
+Melihat detail voucher yang sudah disimpan.
+5. Tabel jurnal dinamis
+Buat tabel detail jurnal dengan kolom:
+Nomor baris.
+Akun.
+Debit.
+Kredit.
+Keterangan baris jika diperlukan.
+Tombol hapus baris.
+Ketentuan:
+Akun dipilih melalui dropdown.
+Pengguna dapat menambah baris jurnal tanpa memuat ulang halaman.
+Pengguna dapat menghapus baris selama jurnal masih berupa draft.
+Nominal debit dan kredit dapat diubah secara langsung.
+Perubahan nominal harus langsung memperbarui total debit, total kredit, selisih, dan indikator keseimbangan.
+Dropdown akun sebaiknya mengambil data dari chart_of_accounts.
+Akun yang tidak aktif tidak boleh digunakan.
+Baris yang belum lengkap harus ditandai dan diberi pesan yang mudah dipahami.
+Minimal terdapat dua baris jurnal yang valid sebelum jurnal dapat diposting.
+6. Kalkulasi otomatis dan indikator zero-discrepancy
+Buat kalkulasi otomatis untuk:
+Total debit.
+Total kredit.
+Selisih debit dan kredit.
+Status keseimbangan jurnal.
+Perbarui kalkulasi ketika pengguna:
+Mengubah nominal debit.
+Mengubah nominal kredit.
+Menambah baris.
+Menghapus baris.
+Mengubah akun atau mengosongkan nominal.
+Tampilkan indikator berikut:
+SEIMBANG
+Total debit sama dengan total kredit.
+Total debit dan kredit lebih besar dari nol.
+Selisih sama dengan nol.
+TIDAK SEIMBANG
+Total debit tidak sama dengan total kredit.
+Tampilkan selisih nominalnya.
+BELUM LENGKAP
+Belum terdapat minimal dua baris jurnal valid.
+Nominal belum diisi dengan benar.
+Akun belum dipilih.
+Header transaksi belum lengkap.
+Gunakan perhitungan nominal yang menghindari galat pembulatan. Pada frontend, gunakan integer dalam satuan sen jika sesuai dengan presisi mata uang yang digunakan. Pada PostgreSQL, gunakan tipe numerik yang tepat seperti NUMERIC(15,2).
+Format angka pada tampilan menggunakan format rupiah Indonesia, misalnya Rp1.000.000,00, tanpa mengubah ketepatan nilai yang disimpan.
+7. Aturan validasi akuntansi
+Tombol posting hanya boleh aktif apabila seluruh ketentuan berikut terpenuhi:
+Tanggal transaksi valid.
+Nomor voucher terisi.
+Deskripsi transaksi terisi.
+Minimal terdapat dua baris jurnal valid.
+Setiap baris memiliki akun yang valid dan aktif.
+Setiap baris memiliki nilai debit atau kredit yang positif, tetapi tidak keduanya sekaligus.
+Tidak ada nominal negatif.
+Tidak ada baris dengan debit dan kredit sama-sama nol.
+Total debit lebih besar dari nol.
+Total kredit lebih besar dari nol.
+Total debit sama dengan total kredit.
+Untuk voucher kas keluar, minimal satu baris harus mengkredit akun Kas.
+Pengguna memiliki hak akses yang sesuai.
+Voucher belum pernah diposting sebelumnya.
+Pastikan akun Kas dikenali melalui konfigurasi akun yang benar di database, bukan hanya berdasarkan nama akun yang diketik pengguna.
+Jika validasi gagal, tombol posting tetap nonaktif dan aplikasi menampilkan alasan yang spesifik.
+Bedakan tombol berikut:
+Simpan Draft.
+Posting Jurnal.
+Batal.
+Tambah Baris.
+Hapus Baris.
+Jangan menyamakan penyimpanan draft dengan posting jurnal.
+8. Validasi backend dan database
+Validasi frontend hanya digunakan untuk membantu pengalaman pengguna. Seluruh aturan penting harus divalidasi kembali di PostgreSQL sebelum jurnal diposting.
+Buat mekanisme database yang:
+Memvalidasi header transaksi.
+Memastikan akun benar-benar terdaftar dan aktif.
+Memeriksa nominal setiap baris.
+Menghitung total debit dan kredit.
+Menolak jurnal yang tidak seimbang.
+Menolak voucher kas keluar yang tidak mengkredit akun Kas.
+Mencegah nomor voucher duplikat.
+Memastikan pengguna memiliki hak akses.
+Mencegah posting berulang.
+Menyimpan header dan detail jurnal secara atomik.
+Jika satu langkah gagal, seluruh perubahan harus dibatalkan agar tidak ada header atau detail jurnal yang tersimpan sebagian.
+Jangan mengandalkan tombol yang dinonaktifkan di frontend sebagai satu-satunya perlindungan.
+9. Integrasi Supabase PostgreSQL
+Rancang database dengan tabel berikut.
+A. chart_of_accounts
+Minimal berisi:
+account_id sebagai primary key.
+account_code yang unik.
+account_name.
+normal_balance.
+report_classification.
+is_active.
+created_at.
+B. journal_headers
+Minimal berisi:
+id sebagai primary key.
+transaction_date.
+reference_number yang unik.
+description.
+posting_status, misalnya DRAFT dan POSTED.
+created_by.
+created_at.
+posted_by.
+posted_at.
+hash_checksum jika diterapkan.
+C. journal_lines
+Minimal berisi:
+id sebagai primary key.
+header_id sebagai foreign key.
+account_id sebagai foreign key.
+debit.
+credit.
+line_description jika diperlukan.
+D. audit_logs
+Minimal berisi:
+id sebagai primary key.
+Identitas transaksi.
+Identitas pengguna.
+Jenis tindakan.
+Detail aktivitas dalam format JSONB jika sesuai.
+Waktu aktivitas.
+Informasi checksum jika diperlukan.
+Buat SQL lengkap untuk seluruh tabel, primary key, foreign key, unique constraint, check constraint, indeks yang relevan, dan relasi antartabel.
+Jelaskan hubungan satu journal_headers dengan banyak journal_lines dan hubungan satu akun dengan banyak baris jurnal.
+Jangan menganggap constraint debit dan kredit pada satu baris otomatis menjamin keseimbangan seluruh transaksi. Pemeriksaan keseimbangan jurnal harus dilakukan pada tingkat transaksi saat posting.
+10. Fungsi posting jurnal
+Buat fungsi PostgreSQL, misalnya post_cash_voucher(payload JSONB), untuk menerima data header dan detail jurnal.
+Fungsi harus:
+Memvalidasi sesi pengguna dan hak akses.
+Memvalidasi header transaksi.
+Memeriksa keunikan nomor voucher.
+Memvalidasi seluruh akun.
+Memastikan terdapat minimal dua baris jurnal.
+Memeriksa debit dan kredit setiap baris.
+Menghitung total debit dan kredit.
+Menolak jurnal yang tidak seimbang.
+Memastikan terdapat kredit pada akun Kas.
+Menyimpan header dan detail jurnal secara atomik.
+Mengubah status menjadi POSTED hanya jika semua pemeriksaan berhasil.
+Mencatat pengguna dan waktu posting.
+Membuat catatan audit.
+Mengembalikan hasil atau pesan kesalahan yang dapat ditangani frontend.
+Jangan mempercayai identitas pengguna yang dikirim melalui payload. Ambil identitas dari konteks autentikasi yang diverifikasi di sisi database.
+Jelaskan cara menghindari duplikasi transaksi jika pengguna menekan tombol Submit berulang kali atau dua pengguna mencoba menggunakan nomor voucher yang sama.
+11. Audit log dan integritas data
+Catat aktivitas penting seperti:
+Pembuatan draft.
+Perubahan draft.
+Posting jurnal.
+Percobaan posting yang gagal jika sesuai dengan rancangan audit.
+Pembuatan reversing entry.
+Percobaan mengubah atau menghapus jurnal yang telah diposting jika perlu dicatat.
+Setiap log sebaiknya mencakup:
+Identitas pengguna.
+Jenis tindakan.
+Identitas transaksi.
+Waktu kejadian.
+Detail relevan.
+Buat mekanisme untuk melindungi audit log dari perubahan atau penghapusan tanpa hak akses.
+Jika menggunakan hash_checksum, jelaskan data yang di-hash, algoritma yang digunakan, cara verifikasi, dan keterbatasannya. Jangan menyatakan checksum sebagai jaminan mutlak bahwa data tidak pernah dimanipulasi.
+12. Perlindungan jurnal yang sudah diposting
+Jurnal berstatus POSTED tidak boleh diubah atau dihapus secara langsung.
+Terapkan perlindungan di database dan hak akses, bukan hanya dengan menonaktifkan tombol frontend.
+Jika terdapat kesalahan pada jurnal yang sudah diposting, koreksi dilakukan melalui reversing entry yang:
+Dibuat sebagai transaksi baru.
+Merujuk pada jurnal asli.
+Membalik posisi debit dan kredit jurnal yang dikoreksi.
+Tetap memenuhi keseimbangan debit-kredit.
+Memiliki catatan audit yang jelas.
+Jelaskan bagaimana sistem membedakan draft, jurnal yang sudah diposting, dan jurnal pembalik.
+13. Keamanan Supabase
+Berikan panduan konfigurasi yang aman:
+Membuat proyek Supabase.
+Menjalankan SQL di SQL Editor.
+Mengatur Project URL dan public/anon key yang sesuai.
+Menghubungkan frontend dengan Supabase JS Client.
+Mengaktifkan Supabase Auth jika diperlukan.
+Mengaktifkan dan mengatur Row Level Security (RLS).
+Membatasi akses langsung ke tabel jurnal.
+Memberikan hak akses hanya sesuai kebutuhan pengguna.
+Menangani error koneksi dan error database.
+Jangan pernah menaruh service_role key atau secret key di HTML maupun JavaScript frontend.
+Jangan mengklaim database sudah terhubung jika URL, key, kebijakan akses, dan pengujian koneksi belum benar-benar dikonfigurasi dan diuji.
+14. Data demo
+Sediakan data contoh untuk pengujian antarmuka, misalnya:
+Kas.
+Beban Operasional.
+Perlengkapan.
+Persediaan.
+Utang Usaha.
+Tandai data tersebut sebagai data demo. Jangan menampilkan data dummy seolah-olah berasal dari database nyata.
+Sediakan contoh transaksi kas keluar yang valid, misalnya debit Beban Operasional Rp1.000.000 dan kredit Kas Rp1.000.000.
+Sediakan juga contoh jurnal yang tidak seimbang untuk menunjukkan bagaimana sistem menolak posting.
+15. Pengujian
+Buat daftar pengujian dengan input, langkah, hasil yang diharapkan, dan kolom hasil aktual yang dapat diisi setelah pengujian dilakukan.
+Minimal mencakup:
+Jurnal seimbang.
+Jurnal tidak seimbang.
+Nominal negatif.
+Debit dan kredit sama-sama terisi pada satu baris.
+Debit dan kredit sama-sama nol.
+Akun tidak ditemukan.
+Akun tidak aktif.
+Nomor voucher duplikat.
+Posting jurnal valid.
+Percobaan mengubah jurnal POSTED.
+Percobaan menghapus jurnal POSTED.
+Pengguna tanpa hak akses.
+Dua pengguna melakukan posting bersamaan.
+Kegagalan saat menyimpan detail jurnal.
+Pembuatan dan verifikasi audit log.
+Reversing entry.
+Jelaskan cara menguji melalui antarmuka aplikasi dan Supabase SQL Editor. Bedakan hasil yang diharapkan dari hasil aktual. Jangan mengklaim suatu skenario berhasil sebelum benar-benar dijalankan.
+16. Dokumentasi kode dan cara menjalankan
+Berikan:
+Struktur file proyek.
+Kode lengkap untuk setiap file.
+Skema SQL lengkap.
+Fungsi dan trigger PostgreSQL.
+Kebijakan keamanan RLS.
+Konfigurasi Supabase.
+Petunjuk menjalankan aplikasi melalui Visual Studio Code.
+Langkah pengujian dari awal hingga akhir.
+Penjelasan singkat tentang fungsi setiap komponen.
+Daftar kemungkinan error dan solusinya.
+Pastikan nama tabel, kolom, fungsi, parameter, dan status konsisten di seluruh implementasi.
+Jika jawaban terlalu panjang, bagi menjadi beberapa bagian berurutan. Jangan menghilangkan kode penting atau mengganti implementasi dengan pseudocode tanpa penjelasan.
+17. Hasil akhir yang harus dihasilkan
+Saya membutuhkan:
+Purwarupa web yang bisa digunakan dan memiliki interaksi nyata.
+Formulir jurnal dinamis dengan kalkulasi otomatis.
+Indikator live balanced yang akurat.
+Validasi tombol Submit berdasarkan aturan akuntansi.
+Rancangan dan implementasi database Supabase PostgreSQL.
+Rancangan audit log.
+Perlindungan jurnal yang telah diposting.
+Dokumentasi prompt yang digunakan untuk membangun UI.
+Dokumentasi cara menjalankan dan menguji aplikasi.
+Screenshot atau tampilan purwarupa yang dapat dijadikan bukti tugas jika lingkungan mendukungnya.
+Mulai dengan membuat purwarupa formulir jurnal dinamis yang bisa langsung dilihat di Gemini Canvas. Setelah antarmuka selesai, lanjutkan dengan database, validasi backend, audit log, keamanan, dan dokumentasi. Pastikan setiap tahap konsisten dengan tahap sebelumnya.
+Gunakan bahasa Indonesia yang mudah dipahami mahasiswa Akuntansi pemula. Utamakan kebenaran logika akuntansi, integritas data, dan fungsi aplikasi. Jangan mengklaim integrasi atau pengujian berhasil jika belum benar-benar dilakukan.
+
+
